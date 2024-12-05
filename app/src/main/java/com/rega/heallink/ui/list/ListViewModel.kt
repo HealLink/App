@@ -1,11 +1,11 @@
 package com.rega.heallink.ui.list
 
-import Note
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rega.heallink.data.NoteRepository
+import com.rega.heallink.data.local.Note
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 import java.io.IOException

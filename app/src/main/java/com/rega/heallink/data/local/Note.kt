@@ -1,3 +1,5 @@
+package com.rega.heallink.data.local
+
 import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -15,5 +17,7 @@ data class Note(
     @ColumnInfo(name = "description")
     var description: String? = null,
     @ColumnInfo(name = "date")
-    var date: String? = null
+    var date: String? = null,
+    @ColumnInfo(name = "score")
+    var score : Double? = null
 ):Parcelable

@@ -1,6 +1,5 @@
 package com.rega.heallink.ui.add
 
-import Note
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.rega.heallink.R
 import com.rega.heallink.ViewModelFactory
+import com.rega.heallink.data.local.Note
 import com.rega.heallink.databinding.FragmentNoteAddBinding
 import com.rega.heallink.di.Injection
+import com.rega.heallink.helper.DateHelper
 
 class NoteAddFragment : Fragment() {
 
@@ -20,7 +21,7 @@ class NoteAddFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val noteAddViewModel: NoteAddViewModel by viewModels {
-        ViewModelFactory(Injection.provideRepository(requireContext()))
+        ViewModelFactory(Injection.provideNoteRepository(requireContext()))
     }
 
     override fun onCreateView(
@@ -52,13 +53,11 @@ class NoteAddFragment : Fragment() {
         val note = Note(
             title = title,
             description = description,
-            date = System.currentTimeMillis().toString() // Example: store the current timestamp as a string
+            date = DateHelper.getCurrentDate()
         )
 
-        // Call insert in ViewModel
         noteAddViewModel.insert(note)
 
-        // Show success message
         Toast.makeText(requireContext(), R.string.note_added, Toast.LENGTH_SHORT).show()
 
         requireView().findNavController().popBackStack()

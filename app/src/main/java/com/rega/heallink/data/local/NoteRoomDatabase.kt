@@ -1,6 +1,5 @@
 package com.rega.heallink.data.local
 
-import Note
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room

@@ -1,9 +1,9 @@
 package com.rega.heallink.ui.add
 
-import Note
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rega.heallink.data.NoteRepository
+import com.rega.heallink.data.local.Note
 import kotlinx.coroutines.launch
 
 class NoteAddViewModel(private val repository: NoteRepository) : ViewModel() {

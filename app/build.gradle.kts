@@ -58,10 +58,13 @@ dependencies {
     implementation (libs.androidx.navigation.fragment.ktx.v274)
     implementation (libs.androidx.navigation.ui.ktx.v274)
     implementation (libs.androidx.recyclerview)
+    implementation (libs.androidx.datastore.preferences)
+
 
     //room implementation
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.activity)
     ksp(libs.room.compiler)
 
     testImplementation(libs.junit)

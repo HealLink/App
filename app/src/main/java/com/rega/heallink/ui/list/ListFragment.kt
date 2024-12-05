@@ -20,7 +20,7 @@ class ListFragment : Fragment() {
     private lateinit var adapter: NoteAdapter
 
     private val listViewModel: ListViewModel by viewModels {
-        ViewModelFactory(Injection.provideRepository(requireContext()))
+        ViewModelFactory(Injection.provideNoteRepository(requireContext()))
     }
 
     override fun onCreateView(

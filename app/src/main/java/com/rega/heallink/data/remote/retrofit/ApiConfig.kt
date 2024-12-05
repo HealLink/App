@@ -1,4 +1,4 @@
-package com.rega.heallink.data.remote
+package com.rega.heallink.data.remote.retrofit
 
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient

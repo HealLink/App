@@ -26,4 +26,18 @@
     <string name="add_note_description">add note</string>
     <string name="note_added">note has been saved</string>
     <string name="fill_all_fields">Please fill all fields</string>
+    <string name="invalid_email">Invalid Email</string>
+    <string name="masukkan_email_anda">Masukkan email Anda</string>
+    <string name="password">Password</string>
+    <string name="masukkan_password">Masukkan password Anda</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="signin">Sign In</string>
+    <string name="belum_punya_akun">Belum punya akun?</string>
+    <string name="register">Register</string>
+    <string name="nama">Nama</string>
+    <string name="masukkan_nama_anda">Masukkan nama Anda</string>
+    <string name="signup">Sign Up</string>
+    <string name="sudah_punya_akun">Sudah punya akun?</string>
+    <string name="log_in">Login</string>
 </resources>

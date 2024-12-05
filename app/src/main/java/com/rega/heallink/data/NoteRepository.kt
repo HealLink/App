@@ -1,9 +1,10 @@
 package com.rega.heallink.data
 
-import Note
+
 import androidx.lifecycle.LiveData
+import com.rega.heallink.data.local.Note
 import com.rega.heallink.data.local.NoteDao
-import com.rega.heallink.data.remote.ApiService
+import com.rega.heallink.data.remote.retrofit.ApiService
 
 class NoteRepository(
     private val apiService: ApiService,

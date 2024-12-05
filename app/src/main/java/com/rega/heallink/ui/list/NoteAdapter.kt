@@ -1,11 +1,11 @@
 package com.rega.heallink.ui.list
 
-import Note
 import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.rega.heallink.data.local.Note
 import com.rega.heallink.databinding.ItemNoteBinding
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
