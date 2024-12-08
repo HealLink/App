@@ -28,7 +28,7 @@ class MusicFragment : Fragment() {
         _binding = FragmentMusicBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
+        val textView: TextView = binding.textMusic
         musicViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }

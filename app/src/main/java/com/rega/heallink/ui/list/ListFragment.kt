@@ -1,5 +1,6 @@
 package com.rega.heallink.ui.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.rega.heallink.R
 import com.rega.heallink.ViewModelFactory
 import com.rega.heallink.databinding.FragmentListBinding
 import com.rega.heallink.di.Injection
+import com.rega.heallink.ui.add.AddActivity
 
 class ListFragment : Fragment() {
 
@@ -32,8 +34,9 @@ class ListFragment : Fragment() {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        binding.fabAdd.setOnClickListener { view ->
-            view.findNavController().navigate(R.id.noteAddFragment)
+        binding.fabAdd.setOnClickListener {
+            val intent = Intent(requireContext(), AddActivity::class.java)
+            startActivity(intent)
         }
 
         adapter = NoteAdapter()

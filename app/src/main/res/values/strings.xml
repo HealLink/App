@@ -40,4 +40,12 @@
     <string name="signup">Sign Up</string>
     <string name="sudah_punya_akun">Sudah punya akun?</string>
     <string name="log_in">Login</string>
+    <string name="send_notif">Send Notif</string>
+    <string name="notification_title">HealLink</string>
+    <string name="notification_message">Tell me your story today!</string>
+    <string name="notification_subtext">Reminder</string>
+    <string name="alarm_time">set reminder time</string>
+    <string name="log_out">Log Out</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
