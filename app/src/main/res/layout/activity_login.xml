@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.rega.heallink.customview.EditTextEmail
+                    <com.heallinkapp.customview.EditTextEmail
                         android:id="@+id/ed_login_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <com.rega.heallink.customview.EditTextPassword
+                    <com.heallinkapp.customview.EditTextPassword
                         android:id="@+id/ed_login_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

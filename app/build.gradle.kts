@@ -1,18 +1,18 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
     id("kotlin-parcelize")
+    id("com.google.devtools.ksp")
 }
 
 android {
-    namespace = "com.rega.heallink"
+    namespace = "com.heallinkapp"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.rega.heallink"
+        applicationId = "com.heallinkapp"
         minSdk = 30
-        targetSdk = 35
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -29,11 +29,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "17"
+        jvmTarget = "11"
     }
     buildFeatures {
         viewBinding = true
@@ -41,33 +41,50 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
+    // Core Android libraries
+    implementation(libs.androidx.core.ktx.v1120)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.lifecycle.livedata.ktx)
-    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation(libs.material.v190)
+    implementation(libs.androidx.constraintlayout.v214)
+
+    // AndroidX Lifecycle
+    implementation(libs.androidx.lifecycle.livedata.ktx.v262)
+    implementation(libs.androidx.lifecycle.viewmodel.ktx.v262)
+
+    // AndroidX Navigation
+    implementation(libs.androidx.navigation.fragment.ktx.v275)
+    implementation(libs.androidx.navigation.ui.ktx.v275)
+
+    // AndroidX Legacy Support
     implementation(libs.androidx.legacy.support.v4)
+
+    // AndroidX Fragment
     implementation(libs.androidx.fragment.ktx)
+
+    // Retrofit & Interceptor
     implementation(libs.retrofit)
-    implementation(libs.retrofit2.converter.gson)
+    implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
-    implementation (libs.androidx.navigation.fragment.ktx.v274)
-    implementation (libs.androidx.navigation.ui.ktx.v274)
-    implementation (libs.androidx.recyclerview)
-    implementation (libs.androidx.datastore.preferences)
 
+    // RecyclerView
+    implementation(libs.androidx.recyclerview)
 
-    //room implementation
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // CardView
+    implementation(libs.androidx.cardview)
+
+    // Room
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.activity)
-    ksp(libs.room.compiler)
+    implementation(libs.androidx.activity.ktx)
+    ksp(libs.androidx.room.compiler)
 
+
+
+    // Testing
     testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.junit.v115)
+    androidTestImplementation(libs.androidx.espresso.core.v351)
 }
