@@ -25,4 +25,5 @@ class NoteAddViewModel(private val repository: NoteRepository) : ViewModel() {
             repository.delete(note)
         }
     }
+
 }

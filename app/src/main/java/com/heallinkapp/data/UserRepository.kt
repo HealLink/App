@@ -45,6 +45,7 @@ class UserRepository private constructor(
     }
 
     val userToken: Flow<String?> = userPreferences.userToken
+    val userName: Flow<String?> = userPreferences.userName
 
 
     companion object {

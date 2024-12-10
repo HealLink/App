@@ -32,6 +32,10 @@ class UserPreferences(private val context: Context) {
         preferences[TOKEN_KEY]
     }
 
+    val userName: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[USER_NAME_KEY]
+    }
+
 
     suspend fun clearPreferences() {
         context.dataStore.edit { it.clear() }

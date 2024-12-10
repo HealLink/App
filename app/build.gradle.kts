@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.play.services.location)
+
     ksp(libs.androidx.room.compiler)
 
 
@@ -91,5 +92,4 @@ dependencies {
     implementation(libs.google.maps.services)
 
     implementation(libs.glide)
-
 }

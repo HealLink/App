@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+
     <item
         android:id="@+id/navigation_list"
         android:icon="@drawable/baseline_notes_24"
@@ -16,4 +17,8 @@
         android:icon="@drawable/baseline_library_music_24"
         android:title="@string/title_music" />
 
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/baseline_logout_24"
+        android:title="@string/log_out" />
 </menu>
