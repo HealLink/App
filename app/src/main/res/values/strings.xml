@@ -2,7 +2,7 @@
     <string name="app_name">HealLink</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="submit">Submit</string>
+    <string name="submit">Analyze</string>
     <string name="delete">Delete</string>
     <string name="date">Date</string>
     <string name="message_undo">Undo deleting the previous item?</string>
@@ -90,4 +90,7 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    <string name="hi_user">Hi User!</string>
+    <string name="tell_me_your_story">Tell me your story!</string>
+    <string name="turn_on_notifications">Turn on notifications?</string>
 </resources>
