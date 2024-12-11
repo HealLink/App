@@ -4,9 +4,32 @@ import com.google.gson.annotations.SerializedName
 
 data class FileUploadResponse(
 
-    @field:SerializedName("error")
-    val error: Boolean? = null,
+    @field:SerializedName("status")
+    val status: String? = null,
 
     @field:SerializedName("message")
-    val message: String? = null
+    val message: String? = null,
+
+    @field:SerializedName("data")
+    val data: FileUploadData? = null
+)
+
+data class FileUploadData(
+
+    @field:SerializedName("id")
+    val id: String? = null,
+
+    @field:SerializedName("result")
+    val result: List<Double>? = null,
+
+    @field:SerializedName("story")
+    val story: String? = null,
+
+    @field:SerializedName("createdAt")
+    val createdAt: String? = null
+)
+
+
+data class UploadRequest(
+    val sentence: String? = null,
 )

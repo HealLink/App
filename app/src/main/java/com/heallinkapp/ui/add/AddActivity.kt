@@ -1,6 +1,7 @@
 package com.heallinkapp.ui.add
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -16,12 +17,16 @@ import androidx.navigation.findNavController
 import com.heallinkapp.R
 import com.heallinkapp.ViewModelFactory
 import com.heallinkapp.data.local.Note
+import com.heallinkapp.data.remote.response.UploadRequest
+import com.heallinkapp.data.remote.retrofit.ApiConfig
 import com.heallinkapp.databinding.ActivityAddBinding
 import com.heallinkapp.di.Injection
 import com.heallinkapp.helper.DateHelper
+import com.heallinkapp.ui.ResultActivity
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
+import retrofit2.HttpException
 
 class AddActivity : AppCompatActivity() {
 
@@ -42,8 +47,42 @@ class AddActivity : AppCompatActivity() {
             binding.textGreet.text = "Hi $username\nTell me your story!"
         }
 
+        lifecycleScope.launchWhenStarted {
+            noteAddViewModel.uploadResult.collect { response ->
+                response?.let {
+                    if (it.status == "success") {
+                        val resultArray = it.data?.result?.map { value -> value.toFloat() }?.toFloatArray()
+
+                        if (resultArray != null) {
+                            val intent = Intent(this@AddActivity, ResultActivity::class.java).apply {
+                                putExtra("RESULT_ARRAY", resultArray)
+                            }
+                            startActivity(intent)
+                        }
+                    } else {
+                        Toast.makeText(this@AddActivity, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+
+        // Observe error
+        lifecycleScope.launchWhenStarted {
+            noteAddViewModel.error.collect { errorMessage ->
+                errorMessage?.let {
+                    Toast.makeText(this@AddActivity, "Error: $it", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
         binding.btnSubmit.setOnClickListener {
-            insertNote()
+            val sentence = binding.edtDescription.text.toString().trim()
+            if (sentence.isNotEmpty()) {
+                noteAddViewModel.uploadStory(sentence)
+            } else {
+                Toast.makeText(this, "Please enter a sentence!", Toast.LENGTH_SHORT).show()
+            }
         }
 
     }
@@ -69,7 +108,6 @@ class AddActivity : AppCompatActivity() {
             date = DateHelper.getCurrentDate()
         )
 
-        // Insert note ke dalam view model
         noteAddViewModel.insert(note)
 
         // Tampilkan Toast bahwa catatan berhasil ditambahkan
@@ -78,5 +116,33 @@ class AddActivity : AppCompatActivity() {
         // Tutup activity
         finish()
     }
+
+    suspend fun uploadStory() {
+        try {
+            val sentence = binding.edtDescription.text.toString().trim()
+
+            if (sentence.isEmpty()) {
+                Toast.makeText(this, "Please enter a sentence!", Toast.LENGTH_SHORT).show()
+                return
+            }
+
+            val apiService = ApiConfig.getApiService("")
+            val uploadRequest = UploadRequest(sentence = sentence)
+
+            val response = apiService.addStory(uploadRequest)
+
+            if (response.status == "success") {
+                Log.d("UploadStory", "Story uploaded successfully with ID: ${response.data?.id}")
+            } else {
+                Log.e("UploadStory", "Failed to upload story: ${response.message}")
+            }
+        } catch (e: HttpException) {
+            Log.e("UploadStory", "HTTP Exception: ${e.code()} - ${e.message()}")
+        } catch (e: Exception) {
+            Log.e("UploadStory", "Unexpected Error: ${e.message}")
+        }
+    }
+
+
 
 }

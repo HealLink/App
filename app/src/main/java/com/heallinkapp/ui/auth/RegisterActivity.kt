@@ -60,9 +60,8 @@ class RegisterActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val response = registerViewModel.register(name, email, password)
-                if (response.error == false) {
-                    saveUserName(name)
-                    showToast("Registration successful")
+                if (response.status == "success") {
+                    showToast(response.message ?: "Registration successful")
                     finish()
                 } else {
                     showToast(response.message ?: "Registration failed")
@@ -80,13 +79,6 @@ class RegisterActivity : AppCompatActivity() {
                 binding.progressBar.visibility = View.GONE
             }
         }
-    }
-
-    private fun saveUserName(name: String) {
-        val sharedPreferences = getSharedPreferences("UserPreferences", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("user_name", name)
-        editor.apply()
     }
 
 

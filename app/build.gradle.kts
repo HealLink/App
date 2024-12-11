@@ -46,10 +46,15 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material.v190)
     implementation(libs.androidx.constraintlayout.v214)
+    implementation (libs.google.material.v190)
+    implementation (libs.androidx.viewpager2)
+
+
 
     // AndroidX Lifecycle
     implementation(libs.androidx.lifecycle.livedata.ktx.v262)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v262)
+
 
     // AndroidX Navigation
     implementation(libs.androidx.navigation.fragment.ktx.v275)
@@ -80,6 +85,7 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.activity.ktx)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.activity)
 
     ksp(libs.androidx.room.compiler)
 

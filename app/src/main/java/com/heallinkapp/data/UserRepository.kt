@@ -1,8 +1,10 @@
 package com.heallinkapp.data
 
+import android.util.Log
 import com.heallinkapp.data.local.UserPreferences
 import com.heallinkapp.data.remote.response.LoginRequest
 import com.heallinkapp.data.remote.response.LoginResponse
+import com.heallinkapp.data.remote.response.RegisterRequest
 import com.heallinkapp.data.remote.response.RegisterResponse
 import com.heallinkapp.data.remote.retrofit.ApiService
 import kotlinx.coroutines.flow.Flow
@@ -13,11 +15,13 @@ class UserRepository private constructor(
 ) {
 
     suspend fun register(name: String, email: String, password: String): RegisterResponse {
-        val response = apiService.register(name, email, password)
+        val registerRequest = RegisterRequest(name, email, password)
+        val response = apiService.register(registerRequest)
 
-        if (response.error == true) {
+        if (response.status != "success") {
             throw Exception(response.message ?: "Registration failed")
         }
+
         return response
     }
 
@@ -25,17 +29,17 @@ class UserRepository private constructor(
         val loginRequest = LoginRequest(email, password)
         val response = apiService.login(loginRequest)
 
-        if (response.error == false) {
-            val token = response.loginResult?.token
-            val userName = response.loginResult?.name
+        Log.d("LoginResponse", "Login response: ${response.status}, message: ${response.message}")
 
-            if (!token.isNullOrEmpty() && !userName.isNullOrEmpty()) {
-                userPreferences.saveToken(
-                    token = token,
-                    userName = userName
-                )
+        if (response.status == "success") {
+            // Accessing the token from the 'data' field
+            val token = response.data?.token
+            val userName = response.data?.name
+
+            if (!token.isNullOrEmpty()&& !userName.isNullOrEmpty())  {
+                userPreferences.saveToken(token,userName)
             } else {
-                throw Exception("Invalid login result data")
+                throw Exception("Login result does not contain a token")
             }
         } else {
             throw Exception(response.message ?: "Login failed")
@@ -44,9 +48,9 @@ class UserRepository private constructor(
         return response
     }
 
+
     val userToken: Flow<String?> = userPreferences.userToken
     val userName: Flow<String?> = userPreferences.userName
-
 
     companion object {
         @Volatile

@@ -15,6 +15,8 @@ class UserPreferences(private val context: Context) {
             androidx.datastore.preferences.core.stringPreferencesKey("user_token")
         private val USER_NAME_KEY =
             androidx.datastore.preferences.core.stringPreferencesKey("user_name")
+        private val IS_FIRST_TIME_KEY =
+            androidx.datastore.preferences.core.booleanPreferencesKey("is_first_time")
 
         fun newInstance(context: Context): UserPreferences {
             return UserPreferences(context)
@@ -28,6 +30,11 @@ class UserPreferences(private val context: Context) {
         }
     }
 
+    suspend fun saveFirstTime(isFirstTime: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_FIRST_TIME_KEY] = isFirstTime
+        }
+    }
     val userToken: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[TOKEN_KEY]
     }
@@ -36,8 +43,15 @@ class UserPreferences(private val context: Context) {
         preferences[USER_NAME_KEY]
     }
 
+    val isFirstTimeFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[IS_FIRST_TIME_KEY] ?: true
+    }
 
     suspend fun clearPreferences() {
-        context.dataStore.edit { it.clear() }
+        context.dataStore.edit { preferences ->
+            preferences.remove(TOKEN_KEY)
+            preferences.remove(USER_NAME_KEY)
+        }
     }
+
 }
