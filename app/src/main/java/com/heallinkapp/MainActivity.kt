@@ -121,10 +121,9 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
         val time = dateFormat.format(calendar.time)
         alarmReceiver.setRepeatingAlarm(this, "Reminder", time, "Tell me your story today!")
 
-        // Update notification status
         isNotificationOn = true
 
-        // Update icon to show notification is ON
+
 //        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
 //        val menuItem = toolbar.menu.findItem(R.id.menu_toggle_notification)
 //        menuItem.setIcon(R.drawable.baseline_notifications_active_24) // Change icon to ON

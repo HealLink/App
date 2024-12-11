@@ -3,6 +3,7 @@ package com.heallinkapp.ui.auth
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -50,12 +51,25 @@ class LoginActivity : AppCompatActivity() {
             val email = binding.edLoginEmail.text.toString()
             val password = binding.edLoginPassword.text.toString()
 
-            if (email.isBlank() || password.isBlank()) {
-                showToast("Email and password cannot be empty")
-            } else {
-                loginUser(email, password)
+            when {
+                email.isBlank() -> {
+                    binding.edLoginEmail.error = "Email cannot be empty"
+                }
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                    binding.edLoginEmail.error = "Please enter a valid email address"
+                }
+                password.isBlank() -> {
+                    binding.edLoginPassword.error = "Password cannot be empty"
+                }
+                password.length < 8 -> {
+                    binding.edLoginPassword.error = "Password must be at least 8 characters"
+                }
+                else -> {
+                    loginUser(email, password)
+                }
             }
         }
+
     }
 
     private fun loginUser(email: String, password: String) {

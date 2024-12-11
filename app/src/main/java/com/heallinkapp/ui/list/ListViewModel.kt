@@ -23,20 +23,22 @@ class ListViewModel(private val repository: NoteRepository) : ViewModel() {
 
     fun getAllNotes() {
         _isLoading.value = true
-        repository.getAllNotes().observeForever { notes ->
-            _notes.value = notes
-            _isLoading.value = false
-        }
-
-        // Handling errors with proper exception handling
-        try {
-            // If there's any asynchronous operation, make sure to catch errors
-        } catch (e: HttpException) {
-            _error.postValue("Network error: ${e.message()}")
-        } catch (e: IOException) {
-            _error.postValue("IO error: ${e.message}")
-        } catch (e: Exception) {
-            _error.postValue("Unknown error: ${e.message}")
+        viewModelScope.launch {
+            try {
+                repository.getAllNotes().observeForever { notes ->
+                    _notes.value = notes
+                    _isLoading.value = false
+                }
+            } catch (e: HttpException) {
+                _error.postValue("Network error: ${e.message()}")
+                _isLoading.value = false
+            } catch (e: IOException) {
+                _error.postValue("IO error: ${e.message}")
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _error.postValue("Unknown error: ${e.message}")
+                _isLoading.value = false
+            }
         }
     }
 }

@@ -18,6 +18,6 @@ data class Note(
     var description: String? = null,
     @ColumnInfo(name = "date")
     var date: String? = null,
-    @ColumnInfo(name = "score")
-    var score : Double? = null
+    @ColumnInfo(name = "result")
+    var result : List<Float>? = null
 ):Parcelable

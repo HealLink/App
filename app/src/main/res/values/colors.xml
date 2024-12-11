@@ -7,4 +7,15 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="your_selected_color">#FF6200EE</color>
+    <color name="your_unselected_color">#B3FFFFFF</color>
+
+    <color name="anxiety_color">#FFCDD2</color>
+    <color name="bipolar_color">#FFCC80</color>
+    <color name="depression_color">#BBDEFB</color>
+    <color name="normal_color">#C8E6C9</color>
+    <color name="personality_disorder_color">#E1BEE7</color>
+    <color name="stress_color">#EF9A9A</color>
+    <color name="suicidal_color">#90CAF9</color>
+
 </resources>

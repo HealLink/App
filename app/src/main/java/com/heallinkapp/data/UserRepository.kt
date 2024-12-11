@@ -32,7 +32,6 @@ class UserRepository private constructor(
         Log.d("LoginResponse", "Login response: ${response.status}, message: ${response.message}")
 
         if (response.status == "success") {
-            // Accessing the token from the 'data' field
             val token = response.data?.token
             val userName = response.data?.name
 

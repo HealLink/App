@@ -2,9 +2,9 @@ package com.heallinkapp.ui.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -47,12 +47,28 @@ class RegisterActivity : AppCompatActivity() {
             val email = binding.edRegisterEmail.text.toString()
             val password = binding.edRegisterPassword.text.toString()
 
-            if (name.isBlank() || email.isBlank() || password.isBlank()) {
-                showToast("All fields are required")
-            } else {
-                registerUser(name, email, password)
+            when {
+                name.isBlank() -> {
+                    binding.edRegisterName.error = "Name cannot be empty"
+                }
+                email.isBlank() -> {
+                    binding.edRegisterEmail.error = "Email cannot be empty"
+                }
+                !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                    binding.edRegisterEmail.error = "Please enter a valid email address"
+                }
+                password.isBlank() -> {
+                    binding.edRegisterPassword.error = "Password cannot be empty"
+                }
+                password.length < 8 -> {
+                    binding.edRegisterPassword.error = "Password must be at least 8 characters"
+                }
+                else -> {
+                    registerUser(name, email, password)
+                }
             }
         }
+
     }
 
     private fun registerUser(name: String, email: String, password: String) {

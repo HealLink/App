@@ -93,4 +93,6 @@
     <string name="hi_user">Hi User!</string>
     <string name="tell_me_your_story">Tell me your story!</string>
     <string name="turn_on_notifications">Turn on notifications?</string>
+    <string name="min_10_words">Please enter at least 10 words.</string>
+    <string name="max_200_words">Please enter no more than 200 words.</string>
 </resources>
