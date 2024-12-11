@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        binding.tvRegisterClick.setOnClickListener {
+        binding.tvRegister.setOnClickListener {
             startActivity(Intent(this, RegisterActivity::class.java))
         }
 

@@ -177,7 +177,7 @@ class MedicalFragment : Fragment() {
                     distance = (estimatedDistance / 1000).toInt(),
                     latitude = element.lat,
                     longitude = element.lon,
-                    image = R.drawable.rsmoewardi
+                    image = R.drawable.medical
                 )
             } catch (e: Exception) {
                 Log.e("MedicalFragment", "Error processing hospital", e)

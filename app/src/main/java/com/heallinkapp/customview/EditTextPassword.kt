@@ -7,12 +7,16 @@ import android.text.TextWatcher
 import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
+import com.heallinkapp.R
 
 class EditTextPassword @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null
 ) : AppCompatEditText(context, attrs) {
 
     init {
+        setTextColor(ContextCompat.getColor(context, R.color.black))
+        setHintTextColor(ContextCompat.getColor(context, R.color.black))
 
         addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
@@ -33,6 +37,4 @@ class EditTextPassword @JvmOverloads constructor(
         super.onDraw(canvas)
         textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
-
-
 }

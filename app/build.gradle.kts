@@ -92,4 +92,6 @@ dependencies {
     implementation(libs.google.maps.services)
 
     implementation(libs.glide)
+    implementation (libs.androidx.media)
+
 }

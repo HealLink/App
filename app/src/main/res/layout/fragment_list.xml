@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/heallink_logo"
-        android:layout_width="218dp"
-        android:layout_height="47dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
@@ -16,32 +16,33 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/heallink_logo" />
+        app:srcCompat="@drawable/heallinklogo" />
 
     <!-- Greeting Text -->
+
+    <!-- Notification Container -->
     <TextView
         android:id="@+id/text_greet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text="@string/hi_user"
-        android:textColor="@android:color/black"
+        android:textColor="@color/purple_primary"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/notification_container"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.082"
+        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/heallink_logo" />
 
-    <!-- Notification Container -->
     <TextView
         android:id="@+id/text_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:text=""
-        android:textColor="@android:color/black"
+        android:textColor="@color/purple_light"
         android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/notification_container"
@@ -65,7 +66,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="@string/turn_on_notification"
-            android:textColor="@android:color/black"
+            android:textColor="@color/purple_light"
+            android:textStyle="bold"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -82,6 +84,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/text_notification" />
+
+        <ImageView
+            android:id="@+id/icon_history"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="216dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/text_notification"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            app:srcCompat="@drawable/baseline_history_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

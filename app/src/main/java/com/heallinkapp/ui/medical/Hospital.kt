@@ -7,5 +7,5 @@ data class Hospital(
     val distance: Int,
     val latitude: Double,
     val longitude: Double,
-    val image: Int = R.drawable.rsmoewardi
+    val image: Int = R.drawable.medical
 )

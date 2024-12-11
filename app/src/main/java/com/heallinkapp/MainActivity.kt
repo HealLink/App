@@ -18,6 +18,7 @@ import com.heallinkapp.databinding.ActivityMainBinding
 import com.heallinkapp.di.Injection
 import com.heallinkapp.notification.AlarmReceiver
 import com.heallinkapp.ui.auth.LoginActivity
+import com.heallinkapp.ui.music.MusicFragment
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -154,6 +155,12 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)
             finish()
+        }
+
+        if (intent.getStringExtra("destination") == "music") {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, MusicFragment())
+                .commit()
         }
     }
 }

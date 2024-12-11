@@ -16,34 +16,73 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import kotlinx.coroutines.launch
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
+import android.os.*
+import android.view.*
+import android.widget.*
+import kotlinx.coroutines.launch
 
 
 import android.os.Handler
 import android.os.Looper
 import android.widget.SeekBar
+import androidx.core.content.ContextCompat
 import com.heallinkapp.R
 
 class MusicFragment : Fragment() {
     private var _binding: FragmentMusicBinding? = null
     private val binding get() = _binding!!
     private lateinit var musicAdapter: MusicAdapter
-    private var mediaPlayer: MediaPlayer? = null
+    private lateinit var musicService: MusicService
     private var currentTrack: Track? = null
-    private var isPlaying: Boolean = false
+    private var isPlaying = false
+
+
+
 
     private val handler = Handler(Looper.getMainLooper())
+
+
     private val updateProgress = object : Runnable {
         override fun run() {
-            mediaPlayer?.let { player ->
-                try {
-                    binding.seekBar.progress = player.currentPosition
-                    binding.tvCurrentTime.text = formatTime(player.currentPosition)
+            try {
+                val currentPosition = musicService.getCurrentPosition()
+                binding.seekBar.progress = currentPosition
+                binding.tvCurrentTime.text = formatTime(currentPosition)
+                if (musicService.isPlaying()) {
                     handler.postDelayed(this, 1000)
-                } catch (e: Exception) {
-                    e.printStackTrace()
                 }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
+    }
+
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            val binder = service as MusicService.MusicBinder
+            musicService = binder.getService()
+
+            val track = musicService.getCurrentTrack()
+            if (track != null) {
+                updatePlayerUI(track)
+                binding.seekBar.max = musicService.getDuration()
+                binding.seekBar.progress = musicService.getCurrentPosition()
+                binding.tvDuration.text = formatTime(musicService.getDuration())
+                binding.tvCurrentTime.text = formatTime(musicService.getCurrentPosition())
+                updatePlayPauseButton(musicService.isPlaying())
+                if (musicService.isPlaying()) {
+                    handler.post(updateProgress)
+                }
+            }
+            musicService.onPlaybackStateChanged = { isPlaying ->
+                updatePlayPauseButton(isPlaying)
+            }
+        }
+        override fun onServiceDisconnected(name: ComponentName?) {}
     }
 
     override fun onCreateView(
@@ -55,6 +94,37 @@ class MusicFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
+        setupPlayerControls()
+        loadMusic()
+        startMusicService()
+
+        lifecycleScope.launch {
+            if (::musicService.isInitialized) {
+                val track = musicService.getCurrentTrack()
+                if (track != null) {
+                    updatePlayerUI(track)
+                    binding.seekBar.max = musicService.getDuration()
+                    binding.seekBar.progress = musicService.getCurrentPosition()
+                    binding.tvDuration.text = formatTime(musicService.getDuration())
+                    binding.tvCurrentTime.text = formatTime(musicService.getCurrentPosition())
+                    updatePlayPauseButton(musicService.isPlaying())
+                }
+            }
+        }
+        handler.post(updateProgress)
+    }
+
+    private fun startMusicService() {
+        Intent(requireContext(), MusicService::class.java).also { intent ->
+            ContextCompat.startForegroundService(requireContext(), intent)
+            requireActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
+
     private fun setupRecyclerView() {
         musicAdapter = MusicAdapter { track ->
             playMusic(track)
@@ -62,34 +132,7 @@ class MusicFragment : Fragment() {
         binding.rvMusic.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = musicAdapter
-            setHasFixedSize(true)
         }
-    }
-
-    private fun loadMusic() {
-        lifecycleScope.launch {
-            try {
-                binding.progressBar.visibility = View.VISIBLE
-                val response = ApiConfig.getJamendoApi()
-                    .getRelaxationMusic(ApiConfig.getClientId())
-                musicAdapter.submitList(response.results)
-            } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading music: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } finally {
-                binding.progressBar.visibility = View.GONE
-            }
-        }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setupRecyclerView()
-        setupPlayerControls()
-        loadMusic()
     }
 
     private fun setupPlayerControls() {
@@ -100,62 +143,58 @@ class MusicFragment : Fragment() {
         binding.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    mediaPlayer?.seekTo(progress)
+                    musicService.seekTo(progress)
                     binding.tvCurrentTime.text = formatTime(progress)
                 }
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                handler.removeCallbacks(updateProgress)
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                handler.post(updateProgress)
+            }
         })
     }
 
-    private fun playMusic(track: Track) {
-        currentTrack = track
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-
+    private fun loadMusic() {
+        lifecycleScope.launch {
             try {
-                setDataSource(track.audio)
-                prepareAsync()
-                setOnPreparedListener {
-                    start()
-                    this@MusicFragment.isPlaying = true
-                    updatePlayerUI(track)
-                    binding.btnPlayPause.setImageResource(R.drawable.ic_pause)
-
-                    binding.seekBar.max = duration
-                    binding.tvDuration.text = formatTime(duration)
-                    handler.post(updateProgress)
-                }
-                setOnCompletionListener {
-                    this@MusicFragment.isPlaying = false
-                    binding.btnPlayPause.setImageResource(R.drawable.ic_play)
-                    handler.removeCallbacks(updateProgress)
-                }
+                binding.progressBar.isVisible = true
+                val response = ApiConfig.getJamendoApi()
+                    .getRelaxationMusic(ApiConfig.getClientId())
+                musicAdapter.submitList(response.results)
             } catch (e: Exception) {
-                Toast.makeText(context, "Error playing music: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Error loading music: ${e.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            } finally {
+                binding.progressBar.isVisible = false
             }
         }
     }
 
+    private fun playMusic(track: Track) {
+        currentTrack = track
+        musicService.play(track)
+        updatePlayerUI(track)
+        musicService.setOnPreparedListener { duration ->
+            binding.seekBar.max = duration
+            binding.tvDuration.text = formatTime(duration)
+            handler.post(updateProgress)
+        }
+        binding.seekBar.progress = 0
+        binding.tvCurrentTime.text = formatTime(0)
+    }
+
     private fun togglePlayPause() {
-        mediaPlayer?.let { player ->
-            if (isPlaying) {
-                player.pause()
-                handler.removeCallbacks(updateProgress)
-                binding.btnPlayPause.setImageResource(R.drawable.ic_play)
-            } else {
-                player.start()
-                handler.post(updateProgress)
-                binding.btnPlayPause.setImageResource(R.drawable.ic_pause)
-            }
-            isPlaying = !isPlaying
+        if (isPlaying) {
+            musicService.pause()
+        } else {
+            musicService.resume()
         }
     }
 
@@ -167,6 +206,13 @@ class MusicFragment : Fragment() {
         }
     }
 
+    private fun updatePlayPauseButton(playing: Boolean) {
+        isPlaying = playing
+        binding.btnPlayPause.setImageResource(
+            if (playing) R.drawable.ic_pause else R.drawable.ic_play
+        )
+    }
+
     private fun formatTime(millis: Int): String {
         val minutes = millis / 1000 / 60
         val seconds = millis / 1000 % 60
@@ -175,17 +221,12 @@ class MusicFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mediaPlayer?.release()
-        mediaPlayer = null
         handler.removeCallbacks(updateProgress)
         _binding = null
     }
 
-    override fun onPause() {
-        super.onPause()
-        mediaPlayer?.pause()
-        isPlaying = false
-        handler.removeCallbacks(updateProgress)
-        binding.btnPlayPause.setImageResource(R.drawable.ic_play)
+    override fun onDestroy() {
+        super.onDestroy()
+        requireActivity().unbindService(serviceConnection)
     }
 }
