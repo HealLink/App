@@ -60,8 +60,8 @@ class RegisterActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val response = registerViewModel.register(name, email, password)
-                if (response.error == false) {
-                    showToast("Registration successful")
+                if (response.status == "success") {
+                    showToast(response.message ?: "Registration successful")
                     finish()
                 } else {
                     showToast(response.message ?: "Registration failed")
