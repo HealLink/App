@@ -15,33 +15,33 @@ class NoteRepository(
     private val noteDao: NoteDao
 ) {
 
-    suspend fun getAllNotes(): LiveData<List<Note>> {
+    suspend fun getAllNotes(token: String): LiveData<List<Note>> {
         val notes = noteDao.getNotesBlocking()
 
         if (notes.isNullOrEmpty()) {
-            fetchAndStoreNotesFromApi()
+            fetchAndStoreNotesFromApi(token)
         }
 
         return noteDao.getAllNotes()
     }
 
-    private suspend fun fetchAndStoreNotesFromApi() {
+    private suspend fun fetchAndStoreNotesFromApi(token: String) {
         try {
-            // Fetch data dari API
             val apiResponse = apiService.getStories()
             Log.d("NoteRepository", "API Response: $apiResponse")
-            val notesToInsert = apiResponse.data?.map { story ->
+
+            // Filter notes based on the matching token
+            val notesToInsert = apiResponse.data?.filter { it?.history?.token == token }?.map { story ->
                 Note(
                     title = story?.history?.title ?: "",
                     description = story?.history?.story ?: "",
-                    date = story?.history?.date?: "",
+                    date = story?.history?.date ?: "",
                     result = story?.history?.result?.map { it.toFloat() }
                 )
             }
 
-            Log.d("NoteRepository", "Notes to insert: $notesToInsert")
+            Log.d("NoteRepository", "Filtered Notes to insert: $notesToInsert")
 
-            // Simpan data ke Room jika ada data
             notesToInsert?.let { notes ->
                 noteDao.insertList(notes)
             }
@@ -50,7 +50,9 @@ class NoteRepository(
         }
     }
 
-
+    suspend fun clearAllNotes() {
+        noteDao.clearAllNotes()
+    }
 
     // Other functions for insert, delete, update, and uploadStory remain the same
     suspend fun insert(note: Note) {

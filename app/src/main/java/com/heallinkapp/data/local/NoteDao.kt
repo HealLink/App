@@ -28,4 +28,7 @@ interface NoteDao {
     @Query("SELECT * FROM note")
     suspend fun getNotesBlocking(): List<Note>
 
+    @Query("DELETE FROM note")
+    suspend fun clearAllNotes()
+
 }

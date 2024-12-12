@@ -16,6 +16,5 @@
     <color name="normal_color">#C8E6C9</color>
     <color name="personality_disorder_color">#E1BEE7</color>
     <color name="stress_color">#EF9A9A</color>
-    <color name="suicidal_color">#90CAF9</color>
-
+    <color name="suicidal_color">#F2EFEF</color>
 </resources>

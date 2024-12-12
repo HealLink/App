@@ -20,4 +20,8 @@
         <!-- Light or dark icons on the navigation bar -->
         <item name="android:windowLightNavigationBar">true</item>
     </style>
+    <style name="CustomDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
 </resources>

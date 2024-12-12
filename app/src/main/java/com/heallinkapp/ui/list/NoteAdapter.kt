@@ -1,13 +1,18 @@
 package com.heallinkapp.ui.list
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
 import com.heallinkapp.R
 import com.heallinkapp.data.local.Note
 import com.heallinkapp.databinding.ItemNoteBinding
+import com.heallinkapp.ui.DetailActivity
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -47,6 +52,22 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
             val colorRes = colorMapping[highestCategory] ?: android.R.color.white
             binding.cvItemNote.setCardBackgroundColor(binding.root.context.getColor(colorRes))
+
+            itemView.setOnClickListener {
+                val context = itemView.context
+//                val optionsCompat: ActivityOptionsCompat =
+//                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        context as Activity,
+//                        Pair(binding.ivItemPhoto, "image"),
+//                        Pair(binding.tvItemName, "username"),
+//                        Pair(binding.tvItemDescription, "description")
+//                    )
+
+                val intent = Intent(context, DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.EXTRA_NOTE, note)
+                }
+                context.startActivity(intent)
+            }
         }
     }
 

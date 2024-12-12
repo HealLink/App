@@ -21,13 +21,20 @@ class ListViewModel(private val repository: NoteRepository) : ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun getAllNotes() {
+    private val _isAlarmSet = MutableLiveData(false)
+    val isAlarmSet: LiveData<Boolean> = _isAlarmSet
+    
+
+    fun toggleAlarmStatus(isSet: Boolean) {
+        _isAlarmSet.value = isSet
+    }
+
+    fun getAllNotes(token : String) {
         _isLoading.value = true
         viewModelScope.launch {
             try {
-                repository.getAllNotes().observeForever { notes ->
+                repository.getAllNotes(token).observeForever { notes ->
                     _notes.value = notes
-                    _isLoading.value = false
                 }
             } catch (e: HttpException) {
                 _error.postValue("Network error: ${e.message()}")
@@ -37,6 +44,8 @@ class ListViewModel(private val repository: NoteRepository) : ViewModel() {
                 _isLoading.value = false
             } catch (e: Exception) {
                 _error.postValue("Unknown error: ${e.message}")
+                _isLoading.value = false
+            }finally {
                 _isLoading.value = false
             }
         }

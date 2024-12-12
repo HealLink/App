@@ -17,6 +17,8 @@ class UserPreferences(private val context: Context) {
             androidx.datastore.preferences.core.stringPreferencesKey("user_name")
         private val IS_FIRST_TIME_KEY =
             androidx.datastore.preferences.core.booleanPreferencesKey("is_first_time")
+        private val IS_ALARM_ON =
+            androidx.datastore.preferences.core.booleanPreferencesKey("is_alarm_on")
 
         fun newInstance(context: Context): UserPreferences {
             return UserPreferences(context)
@@ -35,6 +37,12 @@ class UserPreferences(private val context: Context) {
             preferences[IS_FIRST_TIME_KEY] = isFirstTime
         }
     }
+
+    suspend fun saveAlarmStatus(isAlarmOn: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_ALARM_ON] = isAlarmOn
+        }
+    }
     val userToken: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[TOKEN_KEY]
     }
@@ -45,6 +53,10 @@ class UserPreferences(private val context: Context) {
 
     val isFirstTimeFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[IS_FIRST_TIME_KEY] ?: true
+    }
+
+    val isAlarmOnFlow: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[IS_ALARM_ON] ?: false
     }
 
     suspend fun clearPreferences() {

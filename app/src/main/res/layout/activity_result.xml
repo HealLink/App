@@ -7,70 +7,66 @@
     android:background="#E0E0E0"
     android:padding="16dp">
 
-    <!-- Title -->
-<TextView
-android:id="@+id/titleTextView"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Based on your story, you’re"
-android:textSize="18sp"
-android:textColor="#666666"
-app:layout_constraintTop_toTopOf="parent"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-app:layout_constraintHorizontal_bias="0.5" />
+    <TextView
+    android:id="@+id/titleTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Based on your story, you’re"
+    android:textSize="18sp"
+    android:textColor="#666666"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintHorizontal_bias="0.5" />
 
-    <!-- Image (Sad face) -->
-<ImageView
-android:id="@+id/emotionImageView"
-android:layout_width="100dp"
-android:layout_height="100dp"
-android:src="@drawable/image_sad"
-app:layout_constraintTop_toBottomOf="@id/titleTextView"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-android:layout_marginTop="24dp" />
+    <ImageView
+    android:id="@+id/emotionImageView"
+    android:layout_width="100dp"
+    android:layout_height="100dp"
+    android:src="@drawable/image_sad"
+    app:layout_constraintTop_toBottomOf="@id/titleTextView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="24dp" />
 
-    <!-- Percentage -->
-<TextView
-android:id="@+id/percentageTextView"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="63%"
-android:textSize="36sp"
-android:textColor="#000000"
-android:textStyle="bold"
-app:layout_constraintTop_toBottomOf="@id/emotionImageView"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-android:layout_marginTop="16dp" />
+    <TextView
+    android:id="@+id/percentageTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="63%"
+    android:textSize="36sp"
+    android:textColor="#000000"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@id/emotionImageView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
 
-    <!-- Label -->
-<TextView
-android:id="@+id/labelTextView"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="Depression"
-android:textSize="24sp"
-android:textColor="#000000"
-android:textStyle="bold"
-app:layout_constraintTop_toBottomOf="@id/percentageTextView"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-android:layout_marginTop="8dp" />
+    <TextView
+    android:id="@+id/labelTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Depression"
+    android:textSize="24sp"
+    android:textColor="#000000"
+    android:textStyle="bold"
+    app:layout_constraintTop_toBottomOf="@id/percentageTextView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="8dp" />
 
-    <!-- Details -->
-<TextView
-android:id="@+id/detailsTextView"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="10% Anxiety    10% Stress\n7% Bi-Polar    4% Personality Disorder\n3% Suicidal    0% Normal"
-android:textSize="14sp"
-android:textColor="#666666"
-android:gravity="center"
-app:layout_constraintTop_toBottomOf="@id/labelTextView"
-app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintEnd_toEndOf="parent"
-android:layout_marginTop="16dp" />
+
+    <TextView
+    android:id="@+id/detailsTextView"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="10% Anxiety    10% Stress\n7% Bi-Polar    4% Personality Disorder\n3% Suicidal    0% Normal"
+    android:textSize="14sp"
+    android:textColor="#666666"
+    android:gravity="center"
+    app:layout_constraintTop_toBottomOf="@id/labelTextView"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    android:layout_marginTop="16dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

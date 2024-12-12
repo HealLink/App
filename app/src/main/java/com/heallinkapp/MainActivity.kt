@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
+import com.heallinkapp.data.NoteRepository
 import com.heallinkapp.data.local.UserPreferences
 import com.heallinkapp.databinding.ActivityMainBinding
 import com.heallinkapp.di.Injection
@@ -24,23 +25,13 @@ import java.util.Calendar
 import java.util.Locale
 
 @Suppress("DEPRECATION")
-class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener {
+class MainActivity : AppCompatActivity(),TimePickerFragment.DialogTimeListener{
 
     private lateinit var binding: ActivityMainBinding
-    private var isNotificationOn = false
     val userRepository = Injection.provideUserRepository(this)
+    private lateinit var noteRepository: NoteRepository
     private var lastSelectedItemId: Int = R.id.navigation_list
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Notifications permission rejected", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     private lateinit var alarmReceiver: AlarmReceiver
 
@@ -63,10 +54,6 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
                 R.id.navigation_music
             )
         )
-
-        if (Build.VERSION.SDK_INT >= 33) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
 
         alarmReceiver = AlarmReceiver()
         lastSelectedItemId = navView.selectedItemId
@@ -111,7 +98,7 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
 //    }
 //
     override fun onDialogTimeSet(tag: String?, hourOfDay: Int, minute: Int) {
-        // Siapkan time formatter-nya terlebih dahulu
+
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hourOfDay)
         calendar.set(Calendar.MINUTE, minute)
@@ -119,9 +106,12 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
         val time = dateFormat.format(calendar.time)
-        alarmReceiver.setRepeatingAlarm(this, "Reminder", time, "Tell me your story today!")
+        alarmReceiver.setRepeatingAlarm(this, time, "Tell me your story today!")
 
-        isNotificationOn = true
+        lifecycleScope.launch {
+            val userPreferences = UserPreferences.newInstance(this@MainActivity)
+            userPreferences.saveAlarmStatus(true)
+        }
 
 
 //        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
@@ -148,7 +138,9 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
 
     private fun logoutUser() {
         val userPreferences = UserPreferences(this)
+        val noteRepository = Injection.provideNoteRepository(this)
         lifecycleScope.launch {
+            noteRepository.clearAllNotes()
             userPreferences.clearPreferences()
             val intent = Intent(this@MainActivity, LoginActivity::class.java)
             startActivity(intent)

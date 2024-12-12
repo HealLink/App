@@ -55,6 +55,7 @@ class AddActivity : AppCompatActivity() {
                                 putExtra("RESULT_ARRAY", it)
                             }
                             startActivity(intent)
+                            finish()
                         }
                     } else {
                         Toast.makeText(this@AddActivity, "Upload failed: ${it.message}", Toast.LENGTH_SHORT).show()
