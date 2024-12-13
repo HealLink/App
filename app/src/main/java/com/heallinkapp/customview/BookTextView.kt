@@ -19,15 +19,13 @@ class BookTextView @JvmOverloads constructor(
         style = Paint.Style.STROKE
     }
 
-    private val minLines = 10 // Minimum number of lines to display
+    private val minLines = 10
 
     override fun onDraw(canvas: Canvas) {
-        // Draw horizontal lines
         val lineHeight = lineHeight
         val actualLines = (height / lineHeight).toInt()
         val lineCount = maxOf(minLines, actualLines)
 
-        // Draw lines
         for (i in 0 until lineCount) {
             val baseline = (i + 1) * lineHeight
             canvas.drawLine(
@@ -39,17 +37,14 @@ class BookTextView @JvmOverloads constructor(
             )
         }
 
-        // Draw text on top of the lines
         super.onDraw(canvas)
     }
 
-    // Optional: Method to customize line color
     fun setLineColor(color: Int) {
         linePaint.color = color
         invalidate()
     }
 
-    // Optional: Method to customize line thickness
     fun setLineThickness(thickness: Float) {
         linePaint.strokeWidth = thickness
         invalidate()

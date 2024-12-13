@@ -1,72 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
-    android:padding="16dp">
+    android:layout_margin="16dp"
+    app:cardCornerRadius="20dp"
+    app:cardBackgroundColor="#F8F0FE">
 
-    <TextView
-    android:id="@+id/titleTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Based on your story, you’re"
-    android:textSize="18sp"
-    android:textColor="#666666"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.5" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
 
-    <ImageView
-    android:id="@+id/emotionImageView"
-    android:layout_width="100dp"
-    android:layout_height="100dp"
-    android:src="@drawable/image_sad"
-    app:layout_constraintTop_toBottomOf="@id/titleTextView"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="24dp" />
+        <ImageView
+            android:id="@+id/emotionImageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="32dp"
+            android:src="@drawable/ic_happy"
+            android:contentDescription="Emotion Face"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
-    <TextView
-    android:id="@+id/percentageTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="63%"
-    android:textSize="36sp"
-    android:textColor="#000000"
-    android:textStyle="bold"
-    app:layout_constraintTop_toBottomOf="@id/emotionImageView"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/statusCardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="@color/purple_light"
+            app:layout_constraintTop_toBottomOf="@id/emotionImageView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-    android:id="@+id/labelTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Depression"
-    android:textSize="24sp"
-    android:textColor="#000000"
-    android:textStyle="bold"
-    app:layout_constraintTop_toBottomOf="@id/percentageTextView"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="8dp" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
+                <TextView
+                    android:id="@+id/percentageTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="80%"
+                    android:textSize="24sp"
+                    android:textColor="@color/purple_primary"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
 
-    <TextView
-    android:id="@+id/detailsTextView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="10% Anxiety    10% Stress\n7% Bi-Polar    4% Personality Disorder\n3% Suicidal    0% Normal"
-    android:textSize="14sp"
-    android:textColor="#666666"
-    android:gravity="center"
-    app:layout_constraintTop_toBottomOf="@id/labelTextView"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    android:layout_marginTop="16dp" />
+                <TextView
+                    android:id="@+id/labelTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Depression"
+                    android:layout_gravity="center"
+                    android:textSize="24sp"
+                    android:textColor="#000000"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/percentageTextView"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/detailsTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="10% Anxiety    10% Stress\n7% Bi-Polar    4% Personality Disorder\n3% Suicidal    0% Normal"
+                    android:textSize="14sp"
+                    android:textColor="@color/white"
+                    android:lineSpacingExtra="4dp"
+                    android:gravity="center"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/hospitalCardView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="4dp"
+            app:cardBackgroundColor="#E0F4F0"
+            app:layout_constraintTop_toBottomOf="@id/statusCardView">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/textRecomendation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Value of healty mind"
+                    android:textSize="16sp"
+                    android:textColor="#000000"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Go to Hospital"
+                    android:textSize="14sp"
+                    android:textColor="#757575"/>
+
+                <Button
+                    android:id="@+id/hospitalButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Hospital"
+                    android:textAllCaps="false"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/musicControlsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/hospitalCardView"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <!-- Left side text -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Listen to"
+                    android:textSize="18sp"
+                    android:textColor="#673AB7"
+                    android:fontFamily="sans-serif-medium"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Relaxation Music"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="#512DA8"
+                    android:fontFamily="sans-serif-medium"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calm your mind with soothing melodies"
+                    android:textSize="14sp"
+                    android:textColor="#9575CD"
+                    android:fontFamily="sans-serif-light"/>
+            </LinearLayout>
+
+            <!-- Right side music controls -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/playButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Music"
+                    android:textAllCaps="false"
+                    android:layout_gravity="end"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/rounded_button"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

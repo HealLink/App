@@ -23,7 +23,7 @@ class ListViewModel(private val repository: NoteRepository) : ViewModel() {
 
     private val _isAlarmSet = MutableLiveData(false)
     val isAlarmSet: LiveData<Boolean> = _isAlarmSet
-    
+
 
     fun toggleAlarmStatus(isSet: Boolean) {
         _isAlarmSet.value = isSet

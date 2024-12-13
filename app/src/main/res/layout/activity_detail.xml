@@ -37,7 +37,6 @@
                 android:layout_height="wrap_content"
                 android:text="Just a story"
                 android:paddingStart="5dp"
-                android:fontFamily="@font/merriweather_bold_italic"
                 android:textColor="@color/black"
                 android:textSize="42sp"
                 android:textStyle="bold" />
@@ -48,7 +47,6 @@
                 android:layout_height="wrap_content"
                 android:text="Just a story"
                 android:paddingStart="8dp"
-                android:fontFamily="@font/merriweather_bold"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -59,7 +57,6 @@
                 android:layout_height="match_parent"
                 android:paddingHorizontal="12dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/merriweather_light"
                 android:text="I can't stop worrying about the future. Even when things are calm, I still feel like something bad is going to happen. It's like a constant knot in my stomach that won't go away."
                 android:textColor="@color/black"
                 android:textSize="20sp"

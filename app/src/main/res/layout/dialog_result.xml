@@ -13,16 +13,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Content -->
-        <TextView
-            android:id="@+id/text_diagonose"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Description"
-            android:textColor="@color/black"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_gravity="center_horizontal" />
 
         <ImageView
             android:id="@+id/emotionImageView"
@@ -65,7 +55,18 @@
             android:textSize="14sp"
             android:layout_gravity="center_horizontal" />
 
-        <!-- OK Button -->
+        <TextView
+            android:id="@+id/textSuggest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal" />
+
         <Button
             android:id="@+id/okButton"
             android:layout_width="wrap_content"

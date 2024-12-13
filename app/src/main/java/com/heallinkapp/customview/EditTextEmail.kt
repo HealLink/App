@@ -19,9 +19,7 @@ class EditTextEmail @JvmOverloads constructor(
         setHintTextColor(context.getColor(R.color.black))
 
         addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // Tidak digunakan
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (!s.isNullOrEmpty() && !Patterns.EMAIL_ADDRESS.matcher(s).matches()) {
@@ -29,9 +27,7 @@ class EditTextEmail @JvmOverloads constructor(
                 }
             }
 
-            override fun afterTextChanged(s: Editable?) {
-                // Tidak digunakan
-            }
+            override fun afterTextChanged(s: Editable?) {}
         })
     }
 

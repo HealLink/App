@@ -2,7 +2,6 @@
     <string name="app_name">HealLink</string>
     <string name="title">Title</string>
     <string name="description">Description</string>
-    <string name="submit">Analyze</string>
     <string name="delete">Delete</string>
     <string name="date">Date</string>
     <string name="message_undo">Undo deleting the previous item?</string>
@@ -46,21 +45,12 @@
     <string name="notification_subtext">Reminder</string>
     <string name="alarm_time">set reminder time</string>
     <string name="log_out">Log Out</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
-
-    <string name="anxiety_recommendation">You are anxious. Try relaxation techniques like deep breathing, meditation, and exercise. Keep a regular sleep schedule to manage anxiety.</string>
-    <string name="bipolar_recommendation">You are experiencing bipolar symptoms. Stick to a routine, join support groups, and work with a professional to manage mood swings.</string>
-    <string name="depression_recommendation">You are depressed. Stay active, connect with loved ones, seek therapy, and consider a gratitude journal.</string>
-    <string name="normal_recommendation">Your mental health is stable. Maintain a balanced lifestyle with healthy eating, regular exercise, and sleep. Stay socially active and enjoy hobbies.</string>
-    <string name="personality_disorder_recommendation">You may have a personality disorder. Seek therapy, practice mindfulness, and set healthy boundaries in relationships.</string>
-    <string name="stress_recommendation">You are stressed. Manage stress by prioritizing tasks, using relaxation techniques, and engaging in calming activities.</string>
-    <string name="suicidal_recommendation">You are feeling suicidal. Reach out to loved ones or a professional for help. Remember, you are not alone, and help is available.</string>
+    <string name="hi_user">Hi,</string>
 
     <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
@@ -98,9 +88,19 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
-    <string name="hi_user">Hi User!</string>
-    <string name="tell_me_your_story">Tell me your story!</string>
-    <string name="turn_on_notifications">Turn on notifications?</string>
+    <string name="analyze">Analyze</string>
+    <string name="turn_on_notification">Turn on notification</string>
     <string name="min_10_words">Please enter at least 10 words.</string>
     <string name="max_200_words">Please enter no more than 200 words.</string>
+    <string name="anxiety_recommendation">You are anxious. Try relaxation techniques like deep breathing, meditation, and exercise. Keep a regular sleep schedule to manage anxiety.</string>
+    <string name="bipolar_recommendation">You are experiencing bipolar symptoms. Stick to a routine, join support groups, and work with a professional to manage mood swings.</string>
+    <string name="depression_recommendation">You are depressed. Stay active, connect with loved ones, seek therapy, and consider a gratitude journal.</string>
+    <string name="normal_recommendation">Your mental health is stable. Maintain a balanced lifestyle with healthy eating, regular exercise, and sleep. Stay socially active and enjoy hobbies.</string>
+    <string name="personality_disorder_recommendation">You may have a personality disorder. Seek therapy, practice mindfulness, and set healthy boundaries in relationships.</string>
+    <string name="stress_recommendation">You are stressed. Manage stress by prioritizing tasks, using relaxation techniques, and engaging in calming activities.</string>
+    <string name="suicidal_recommendation">You are feeling suicidal. Reach out to loved ones or a professional for help. Remember, you are not alone, and help is available.</string>
+    <string name="greeting_text">Hi %1$s\nHere are your stories!</string>
+    <string name="permission_granted">Permission granted</string>
+    <string name="permission_denied">Permission denied</string>
+
 </resources>

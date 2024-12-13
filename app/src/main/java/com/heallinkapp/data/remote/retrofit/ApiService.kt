@@ -37,6 +37,6 @@ interface ApiService {
     @POST("predict")
     @Headers("Content-Type: application/json")
     suspend fun addStory(
-    @Body uploadRequest: UploadRequest
+        @Body uploadRequest: UploadRequest
     ): FileUploadResponse
 }

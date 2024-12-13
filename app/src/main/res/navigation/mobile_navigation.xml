@@ -20,8 +20,12 @@
     <fragment
         android:id="@+id/navigation_music"
         android:name="com.heallinkapp.ui.music.MusicFragment"
-        android:label="@string/title_music"
-        tools:layout="@layout/fragment_music" />
+        android:label="Music"
+        tools:layout="@layout/fragment_music">
+        <deepLink
+            app:uri="heallink://app/music" />
+    </fragment>
+
     <activity
         android:id="@+id/addActivity"
         android:name="com.heallinkapp.ui.add.AddActivity"

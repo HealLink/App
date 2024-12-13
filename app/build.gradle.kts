@@ -1,4 +1,3 @@
-
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -48,11 +47,14 @@ dependencies {
     implementation(libs.material.v190)
     implementation(libs.androidx.constraintlayout.v214)
     implementation (libs.google.material.v190)
+    implementation (libs.androidx.viewpager2)
+
+
 
     // AndroidX Lifecycle
     implementation(libs.androidx.lifecycle.livedata.ktx.v262)
     implementation(libs.androidx.lifecycle.viewmodel.ktx.v262)
-    implementation (libs.androidx.viewpager2)
+
 
     // AndroidX Navigation
     implementation(libs.androidx.navigation.fragment.ktx.v275)
@@ -82,7 +84,9 @@ dependencies {
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.activity.ktx)
+    implementation(libs.play.services.location)
     implementation(libs.androidx.activity)
+
     ksp(libs.androidx.room.compiler)
 
 
@@ -91,4 +95,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit.v115)
     androidTestImplementation(libs.androidx.espresso.core.v351)
+    implementation(libs.google.maps.services)
+
+    implementation(libs.glide)
+    implementation (libs.androidx.media)
+
 }
