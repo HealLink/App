@@ -30,24 +30,21 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.heallinkapp.R
 import kotlinx.coroutines.Job
 
 class MusicFragment : Fragment() {
     private var _binding: FragmentMusicBinding? = null
-    private val binding get() = _binding ?: throw IllegalStateException("Binding only valid between onCreateView and onDestroyView")
+    private val binding get() = _binding!!
+
+    private val viewModel: MusicViewModel by activityViewModels()
     private lateinit var musicAdapter: MusicAdapter
     private lateinit var musicService: MusicService
     private var currentTrack: Track? = null
     private var isPlaying = false
-    private var loadMusicJob: Job? = null
-
-
-
-
-
     private val handler = Handler(Looper.getMainLooper())
-
 
     private val updateProgress = object : Runnable {
         override fun run() {
@@ -81,6 +78,7 @@ class MusicFragment : Fragment() {
                     handler.post(updateProgress)
                 }
             }
+
             musicService.onPlaybackStateChanged = { isPlaying ->
                 updatePlayPauseButton(isPlaying)
             }
@@ -101,32 +99,10 @@ class MusicFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         setupPlayerControls()
-        loadMusic()
+        setupObservers()
         startMusicService()
-
-        lifecycleScope.launch {
-            if (::musicService.isInitialized) {
-                val track = musicService.getCurrentTrack()
-                if (track != null) {
-                    updatePlayerUI(track)
-                    binding.seekBar.max = musicService.getDuration()
-                    binding.seekBar.progress = musicService.getCurrentPosition()
-                    binding.tvDuration.text = formatTime(musicService.getDuration())
-                    binding.tvCurrentTime.text = formatTime(musicService.getCurrentPosition())
-                    updatePlayPauseButton(musicService.isPlaying())
-                }
-            }
-        }
-        handler.post(updateProgress)
+        viewModel.loadMusicIfNeeded()
     }
-
-    private fun startMusicService() {
-        Intent(requireContext(), MusicService::class.java).also { intent ->
-            ContextCompat.startForegroundService(requireContext(), intent)
-            requireActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
-        }
-    }
-
 
     private fun setupRecyclerView() {
         musicAdapter = MusicAdapter { track ->
@@ -161,29 +137,19 @@ class MusicFragment : Fragment() {
         })
     }
 
-    private fun loadMusic() {
-        loadMusicJob = lifecycleScope.launch {
-            try {
-                if (!isAdded) return@launch
+    private fun setupObservers() {
+        viewModel.tracks.observe(viewLifecycleOwner) { tracks ->
+            musicAdapter.submitList(tracks)
+        }
 
-                _binding?.progressBar?.isVisible = true
-                val response = ApiConfig.getJamendoApi()
-                    .getRelaxationMusic(ApiConfig.getClientId())
+        viewModel.isLoading.observe(viewLifecycleOwner) { isLoading ->
+            binding.progressBar.isVisible = isLoading
+        }
 
-                if (!isAdded) return@launch
-                _binding?.let { binding ->
-                    musicAdapter.submitList(response.results)
-                    binding.progressBar.isVisible = false
-                }
-            } catch (e: Exception) {
-                if (!isAdded) return@launch
-                context?.let { ctx ->
-                    Toast.makeText(
-                        ctx,
-                        "Error loading music: ${e.message}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        viewModel.error.observe(viewLifecycleOwner) { error ->
+            error?.let {
+                Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+                viewModel.clearError()
             }
         }
     }
@@ -230,15 +196,26 @@ class MusicFragment : Fragment() {
         return String.format("%02d:%02d", minutes, seconds)
     }
 
+    private fun startMusicService() {
+        Intent(requireContext(), MusicService::class.java).also { intent ->
+            ContextCompat.startForegroundService(requireContext(), intent)
+            requireActivity().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
     override fun onDestroyView() {
-        super.onDestroyView()
-        loadMusicJob?.cancel()
         handler.removeCallbacks(updateProgress)
+        super.onDestroyView()
         _binding = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        requireActivity().unbindService(serviceConnection)
+        try {
+            handler.removeCallbacks(updateProgress)
+            requireActivity().unbindService(serviceConnection)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

@@ -35,11 +35,13 @@ class MusicService : Service() {
     private lateinit var mediaSession: MediaSessionCompat
     private var onPreparedCallback: ((Int) -> Unit)? = null
 
-
-
     fun getCurrentPosition(): Int = mediaPlayer?.currentPosition ?: 0
     fun getDuration(): Int = mediaPlayer?.duration ?: 0
     fun getCurrentTrack(): Track? = currentTrack
+
+    inner class MusicBinder : Binder() {
+        fun getService(): MusicService = this@MusicService
+    }
 
 
     override fun onCreate() {
@@ -65,9 +67,6 @@ class MusicService : Service() {
         return START_NOT_STICKY
     }
 
-    inner class MusicBinder : Binder() {
-        fun getService(): MusicService = this@MusicService
-    }
 
     private fun initMediaSession() {
         mediaSession = MediaSessionCompat(this, "MusicService")
