@@ -86,10 +86,7 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.play.services.location)
     implementation(libs.androidx.activity)
-
     ksp(libs.androidx.room.compiler)
-
-
 
     // Testing
     testImplementation(libs.junit)

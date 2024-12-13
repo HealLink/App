@@ -11,3 +11,4 @@ class RegisterViewModel(private val userRepository: UserRepository) : ViewModel(
         return userRepository.register(name, email, password)
     }
 }
+

@@ -18,9 +18,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/heallinklogo" />
 
-    <!-- Greeting Text -->
-
-    <!-- Notification Container -->
     <TextView
         android:id="@+id/text_greet"
         android:layout_width="wrap_content"
@@ -84,6 +81,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/notification_container"
         app:layout_constraintVertical_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notification_container"
         tools:listitem="@layout/item_note" />
 
 
