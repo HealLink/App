@@ -20,7 +20,7 @@ data class FileUploadData(
     val id: String? = null,
 
     @field:SerializedName("result")
-    val result: List<Double>? = null,
+    val result: List<Float>? = null,
 
     @field:SerializedName("story")
     val story: String? = null,
@@ -31,5 +31,8 @@ data class FileUploadData(
 
 
 data class UploadRequest(
+    val token: String? = null,
+    val title: String? = null,
     val sentence: String? = null,
+    val date: String? = null
 )

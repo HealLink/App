@@ -24,8 +24,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HealLinkApp.Light">
         <activity
-            android:name=".ui.ResultActivity"
+            android:name=".ui.DetailActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.ResultActivity"
+            android:exported="false"
+            android:theme="@style/Theme.HealLinkApp"/>
         <activity
             android:name=".ui.OnBoardingActivity"
             android:exported="false" /> <!-- Splash Activity -->

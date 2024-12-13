@@ -13,12 +13,22 @@ interface NoteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(note: Note)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertList(notes: List<Note>)
+
     @Update
     suspend fun update(note: Note)
 
     @Delete
     suspend fun delete(note: Note)
-    
-    @Query("SELECT * from note ORDER BY id DESC")
+
+    @Query("SELECT * from note ORDER BY date DESC")
     fun getAllNotes(): LiveData<List<Note>>
+
+    @Query("SELECT * FROM note")
+    suspend fun getNotesBlocking(): List<Note>
+
+    @Query("DELETE FROM note")
+    suspend fun clearAllNotes()
+
 }

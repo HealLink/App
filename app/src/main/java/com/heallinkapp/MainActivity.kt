@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.heallinkapp.data.local.UserPreferences
@@ -28,20 +29,11 @@ import java.util.Locale
 class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
     private var isNotificationOn = false
     val userRepository = Injection.provideUserRepository(this)
     private var lastSelectedItemId: Int = R.id.navigation_list
 
-    private val requestPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                Toast.makeText(this, "Notifications permission granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Notifications permission rejected", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     private lateinit var alarmReceiver: AlarmReceiver
 
@@ -57,6 +49,20 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
         val navView: BottomNavigationView = binding.navView
 
         val navController = findNavController(com.heallinkapp.R.id.nav_host_fragment_activity_main)
+        if (savedInstanceState == null) {
+            when {
+                intent.getBooleanExtra("openMedical", false) -> {
+                    navController.navigate(R.id.navigation_medical)
+                    binding.navView.selectedItemId = R.id.navigation_medical
+                }
+                intent.getBooleanExtra("openMusic", false) -> {
+                    navController.navigate(R.id.navigation_music)
+                    binding.navView.selectedItemId = R.id.navigation_music
+                }
+            }
+        }
+
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_list,
@@ -65,14 +71,11 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
             )
         )
 
-        if (Build.VERSION.SDK_INT >= 33) {
-            requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        }
 
         alarmReceiver = AlarmReceiver()
         lastSelectedItemId = navView.selectedItemId
 
-        navView.setOnNavigationItemSelectedListener { item ->
+        binding.navView.setOnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.action_logout -> {
                     showLogoutConfirmationDialog()
@@ -110,7 +113,9 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
 //            timePickerFragment.show(supportFragmentManager, "timePicker")
 //        }
 //    }
-//
+
+
+
     override fun onDialogTimeSet(tag: String?, hourOfDay: Int, minute: Int) {
         // Siapkan time formatter-nya terlebih dahulu
         val calendar = Calendar.getInstance()
@@ -120,11 +125,13 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
         val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
         val time = dateFormat.format(calendar.time)
-        alarmReceiver.setRepeatingAlarm(this, "Reminder", time, "Tell me your story today!")
+        alarmReceiver.setRepeatingAlarm(this, time, "Tell me your story today!")
 
         // Update notification status
-        isNotificationOn = true
-
+        lifecycleScope.launch {
+            val userPreferences = UserPreferences.newInstance(this@MainActivity)
+            userPreferences.saveAlarmStatus(true)
+        }
         // Update icon to show notification is ON
 //        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
 //        val menuItem = toolbar.menu.findItem(R.id.menu_toggle_notification)
@@ -163,4 +170,5 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
                 .commit()
         }
     }
+
 }

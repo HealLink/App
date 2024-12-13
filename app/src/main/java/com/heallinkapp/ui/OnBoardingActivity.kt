@@ -2,11 +2,14 @@ package com.heallinkapp.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -26,29 +29,32 @@ class OnBoardingActivity : AppCompatActivity() {
         val finishButton: Button = findViewById(R.id.finishButton)
 
         val layouts = listOf(
-            R.layout.onboarding_page_note, // Layout untuk halaman 1
-            R.layout.onboarding_page_medical, // Layout untuk halaman 2
-            R.layout.onboarding_page_music // Layout untuk halaman 3
+            R.layout.onboarding_page_note, // Halaman 1
+            R.layout.onboarding_page_medical, // Halaman 2
+            R.layout.onboarding_page_music // Halaman 3
         )
 
-        // Setel ViewPager dengan layout
-        viewPager.adapter = object : androidx.recyclerview.widget.RecyclerView.Adapter<androidx.recyclerview.widget.RecyclerView.ViewHolder>() {
-            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): androidx.recyclerview.widget.RecyclerView.ViewHolder {
-                val view = layoutInflater.inflate(layouts[viewType], parent, false)
-                return object : androidx.recyclerview.widget.RecyclerView.ViewHolder(view) {}
+        // Adapter untuk ViewPager2
+        viewPager.adapter = object : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+            override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                val view = LayoutInflater.from(parent.context).inflate(layouts[viewType], parent, false)
+                return object : RecyclerView.ViewHolder(view) {}
             }
 
-            override fun onBindViewHolder(holder: androidx.recyclerview.widget.RecyclerView.ViewHolder, position: Int) {}
+            override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {}
 
             override fun getItemCount(): Int = layouts.size
 
             override fun getItemViewType(position: Int): Int = position
         }
 
-        // Tambahkan TabLayoutMediator untuk indikator tab
-        TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
+        // Tambahkan TabLayoutMediator untuk menghubungkan ViewPager2 dengan TabLayout
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            // Konfigurasi tab jika diperlukan
+        }.attach()
 
-        // Logika untuk tombol selesai
+
+        // Tampilkan tombol selesai hanya di halaman terakhir
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
@@ -56,15 +62,15 @@ class OnBoardingActivity : AppCompatActivity() {
             }
         })
 
+        // Logika untuk tombol selesai
         finishButton.setOnClickListener {
-            // Simpan status isFirstTime menjadi false
             lifecycleScope.launch {
                 val userPreferences = UserPreferences.newInstance(this@OnBoardingActivity)
                 userPreferences.saveFirstTime(false)
 
                 // Navigasi ke MainActivity
                 startActivity(Intent(this@OnBoardingActivity, MainActivity::class.java))
-                finish() // Tutup aktivitas onboarding
+                finish()
             }
         }
     }

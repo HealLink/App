@@ -31,14 +31,17 @@ import android.os.Looper
 import android.widget.SeekBar
 import androidx.core.content.ContextCompat
 import com.heallinkapp.R
+import kotlinx.coroutines.Job
 
 class MusicFragment : Fragment() {
     private var _binding: FragmentMusicBinding? = null
-    private val binding get() = _binding!!
+    private val binding get() = _binding ?: throw IllegalStateException("Binding only valid between onCreateView and onDestroyView")
     private lateinit var musicAdapter: MusicAdapter
     private lateinit var musicService: MusicService
     private var currentTrack: Track? = null
     private var isPlaying = false
+    private var loadMusicJob: Job? = null
+
 
 
 
@@ -159,20 +162,28 @@ class MusicFragment : Fragment() {
     }
 
     private fun loadMusic() {
-        lifecycleScope.launch {
+        loadMusicJob = lifecycleScope.launch {
             try {
-                binding.progressBar.isVisible = true
+                if (!isAdded) return@launch
+
+                _binding?.progressBar?.isVisible = true
                 val response = ApiConfig.getJamendoApi()
                     .getRelaxationMusic(ApiConfig.getClientId())
-                musicAdapter.submitList(response.results)
+
+                if (!isAdded) return@launch
+                _binding?.let { binding ->
+                    musicAdapter.submitList(response.results)
+                    binding.progressBar.isVisible = false
+                }
             } catch (e: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Error loading music: ${e.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } finally {
-                binding.progressBar.isVisible = false
+                if (!isAdded) return@launch
+                context?.let { ctx ->
+                    Toast.makeText(
+                        ctx,
+                        "Error loading music: ${e.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
         }
     }
@@ -221,6 +232,7 @@ class MusicFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        loadMusicJob?.cancel()
         handler.removeCallbacks(updateProgress)
         _binding = null
     }

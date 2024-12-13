@@ -3,9 +3,9 @@ package com.heallinkapp.data.remote.retrofit
 import com.heallinkapp.data.remote.response.FileUploadResponse
 import com.heallinkapp.data.remote.response.LoginRequest
 import com.heallinkapp.data.remote.response.LoginResponse
+import com.heallinkapp.data.remote.response.NotesResponse
 import com.heallinkapp.data.remote.response.RegisterRequest
 import com.heallinkapp.data.remote.response.RegisterResponse
-import com.heallinkapp.data.remote.response.StoryResponse
 import com.heallinkapp.data.remote.response.UploadRequest
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -31,8 +31,8 @@ interface ApiService {
         @Body loginRequest: LoginRequest
     ): LoginResponse
 
-    @GET("stories")
-    suspend fun getStories(): StoryResponse
+    @GET("predict/histories")
+    suspend fun getStories(): NotesResponse
 
     @POST("predict")
     @Headers("Content-Type: application/json")

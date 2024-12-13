@@ -21,22 +21,33 @@ class ListViewModel(private val repository: NoteRepository) : ViewModel() {
     private val _error = MutableLiveData<String?>()
     val error: LiveData<String?> = _error
 
-    fun getAllNotes() {
-        _isLoading.value = true
-        repository.getAllNotes().observeForever { notes ->
-            _notes.value = notes
-            _isLoading.value = false
-        }
+    private val _isAlarmSet = MutableLiveData(false)
+    val isAlarmSet: LiveData<Boolean> = _isAlarmSet
 
-        // Handling errors with proper exception handling
-        try {
-            // If there's any asynchronous operation, make sure to catch errors
-        } catch (e: HttpException) {
-            _error.postValue("Network error: ${e.message()}")
-        } catch (e: IOException) {
-            _error.postValue("IO error: ${e.message}")
-        } catch (e: Exception) {
-            _error.postValue("Unknown error: ${e.message}")
+
+    fun toggleAlarmStatus(isSet: Boolean) {
+        _isAlarmSet.value = isSet
+    }
+
+    fun getAllNotes(token : String) {
+        _isLoading.value = true
+        viewModelScope.launch {
+            try {
+                repository.getAllNotes(token).observeForever { notes ->
+                    _notes.value = notes
+                }
+            } catch (e: HttpException) {
+                _error.postValue("Network error: ${e.message()}")
+                _isLoading.value = false
+            } catch (e: IOException) {
+                _error.postValue("IO error: ${e.message}")
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _error.postValue("Unknown error: ${e.message}")
+                _isLoading.value = false
+            }finally {
+                _isLoading.value = false
+            }
         }
     }
 }

@@ -28,6 +28,10 @@ class MusicService : Service() {
     private var mediaPlayer: MediaPlayer? = null
     private var currentTrack: Track? = null
     var onPlaybackStateChanged: ((Boolean) -> Unit)? = null
+        set (value) {
+            field = value
+            value?.invoke(isPlaying())
+        }
     private lateinit var mediaSession: MediaSessionCompat
     private var onPreparedCallback: ((Int) -> Unit)? = null
 
@@ -99,24 +103,32 @@ class MusicService : Service() {
 
 
     fun play(track: Track) {
-        mediaPlayer?.release()
-        mediaPlayer = MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .build()
-            )
-            setDataSource(track.audio)
-            prepareAsync()
-            setOnPreparedListener {
-                start()
-                onPlaybackStateChanged?.invoke(true)
-                showNotification(track)
-                onPreparedCallback?.invoke(duration)  // Callback with duration
+        try {
+            mediaPlayer?.release()
+            mediaPlayer = MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .build()
+                )
+                setDataSource(track.audio)
+                prepareAsync()
+                setOnPreparedListener {
+                    start()
+                    onPlaybackStateChanged?.invoke(true)
+                    showNotification(track)
+                    onPreparedCallback?.invoke(duration)
+                }
+                setOnErrorListener { _, _, _ ->
+                    onPlaybackStateChanged?.invoke(false)
+                    true
+                }
             }
+            currentTrack = track
+        } catch (e: Exception) {
+            onPlaybackStateChanged?.invoke(false)
         }
-        currentTrack = track
     }
 
     fun pause() {
@@ -228,6 +240,8 @@ class MusicService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
+        onPlaybackStateChanged = null
+        onPreparedCallback = null
         mediaPlayer?.release()
         mediaPlayer = null
         mediaSession.release()

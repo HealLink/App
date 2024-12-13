@@ -1,12 +1,18 @@
 package com.heallinkapp.ui.list
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.app.ActivityOptionsCompat
+import androidx.core.util.Pair
 import androidx.recyclerview.widget.RecyclerView
+import com.heallinkapp.R
 import com.heallinkapp.data.local.Note
 import com.heallinkapp.databinding.ItemNoteBinding
+import com.heallinkapp.ui.DetailActivity
 
 class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
@@ -14,9 +20,54 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
     class NoteViewHolder(private val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(note: Note) {
+            val classMapping = mapOf(
+                0 to "Anxiety",
+                1 to "Bipolar",
+                2 to "Depression",
+                3 to "Normal",
+                4 to "Personality disorder",
+                5 to "Stress",
+                6 to "Suicidal"
+            )
+
+            val colorMapping = mapOf(
+                "Anxiety" to R.color.anxiety_color,
+                "Bipolar" to R.color.bipolar_color,
+                "Depression" to R.color.depression_color,
+                "Normal" to R.color.normal_color,
+                "Personality disorder" to R.color.personality_disorder_color,
+                "Stress" to R.color.stress_color,
+                "Suicidal" to R.color.suicidal_color
+            )
+
+            val sortedResults = note.result?.mapIndexed { index, confidence ->
+                classMapping[index] to confidence
+            }?.sortedByDescending { it.second }
+
+            val highestCategory = sortedResults?.firstOrNull()?.first
+
             binding.tvItemTitle.text = note.title
             binding.tvItemDescription.text = note.description
             binding.tvItemDate.text = note.date
+
+            val colorRes = colorMapping[highestCategory] ?: android.R.color.white
+            binding.cvItemNote.setCardBackgroundColor(binding.root.context.getColor(colorRes))
+
+            itemView.setOnClickListener {
+                val context = itemView.context
+//                val optionsCompat: ActivityOptionsCompat =
+//                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                        context as Activity,
+//                        Pair(binding.ivItemPhoto, "image"),
+//                        Pair(binding.tvItemName, "username"),
+//                        Pair(binding.tvItemDescription, "description")
+//                    )
+
+                val intent = Intent(context, DetailActivity::class.java).apply {
+                    putExtra(DetailActivity.EXTRA_NOTE, note)
+                }
+                context.startActivity(intent)
+            }
         }
     }
 
@@ -42,5 +93,4 @@ class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
             notifyDataSetChanged()
         }
     }
-
 }
