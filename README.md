@@ -6,7 +6,7 @@
 </p>
 
 
-HealLink is a user-friendly Android mobile application designed to help users assess their mental health status. The application acts as a digital diary or journal where users can write their stories, which are then analyzed to provide general mental health status and give the users recommendations to improve their mental healt. 
+HealLink is a user-friendly Android mobile application designed to help users assess their mental health status. The application acts as a digital diary or journal where users can write their stories, which are then analyzed to provide general mental health status and give the users recommendations to improve their mental health. 
 
 > **Disclaimer:** HealLink provides general mental health recommendations, the suggestions offered do not take into account individual needs, social status, or economic circumstances.
 
