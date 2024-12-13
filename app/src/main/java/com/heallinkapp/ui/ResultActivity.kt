@@ -56,6 +56,16 @@ class ResultActivity : AppCompatActivity() {
             6 to "Suicidal"
         )
 
+        val recommendationMapping = mapOf(
+            "Anxiety" to R.string.anxiety_recommendation,
+            "Bipolar" to R.string.bipolar_recommendation,
+            "Depression" to R.string.depression_recommendation,
+            "Normal" to R.string.normal_recommendation,
+            "Personality disorder" to R.string.personality_disorder_recommendation,
+            "Stress" to R.string.stress_recommendation,
+            "Suicidal" to R.string.suicidal_recommendation
+        )
+
         if (resultArray != null) {
             val sortedResults = resultArray.mapIndexed { index, confidence ->
                 classMapping[index] to confidence
@@ -70,6 +80,10 @@ class ResultActivity : AppCompatActivity() {
             percentageTextView.text = "${String.format("%.0f", highestConfidence.second * 100)}%"
             labelTextView.text = highestConfidence.first
             detailsTextView.text = details
+
+            // Update recommendation text
+            findViewById<TextView>(R.id.textRecomendation).text =
+                getString(recommendationMapping[highestConfidence.first] ?: R.string.normal_recommendation)
 
             // Set emotion icon based on the result
             val drawableResource = when (highestConfidence.first) {

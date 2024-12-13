@@ -39,7 +39,7 @@
             android:id="@+id/textViewDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="This is the note slide."
+            android:text="Listen to curated relaxing music. Let the soothing melodies help calm your mind and reduce stress."
             android:textSize="16sp"
             android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/textViewWelcome"

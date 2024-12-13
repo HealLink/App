@@ -104,7 +104,7 @@ class DetailActivity : AppCompatActivity() {
     private fun showDetailsDialog() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_result, null)
 
-        val textDiagnose = dialogView.findViewById<TextView>(R.id.text_diagonose)
+        val textSuggest = dialogView.findViewById<TextView>(R.id.textSuggest)
         val emotionImageView = dialogView.findViewById<ImageView>(R.id.emotionImageView)
         val percentageTextView = dialogView.findViewById<TextView>(R.id.percentageTextView)
         val labelTextView = dialogView.findViewById<TextView>(R.id.labelTextView)
@@ -130,15 +130,26 @@ class DetailActivity : AppCompatActivity() {
             else -> R.drawable.heallink_logo
         }
 
+        val recommendationMapping = mapOf(
+            "Anxiety" to R.string.anxiety_recommendation,
+            "Bipolar" to R.string.bipolar_recommendation,
+            "Depression" to R.string.depression_recommendation,
+            "Normal" to R.string.normal_recommendation,
+            "Personality disorder" to R.string.personality_disorder_recommendation,
+            "Stress" to R.string.stress_recommendation,
+            "Suicidal" to R.string.suicidal_recommendation
+        )
+
         val details = sortedResults?.drop(1)?.joinToString("\n") {
             "${String.format("%.0f", it.second * 100)}% ${it.first}"
         }
 
-        textDiagnose.text = "Description"
         emotionImageView.setImageResource(drawableResource)
         percentageTextView.text = "${String.format("%.0f", highestConfidence!!.second * 100)}%"
         labelTextView.text = highestConfidence.first
         detailsTextView.text = details
+        textSuggest.text = getString(recommendationMapping[highestConfidence.first] ?: R.string.normal_recommendation)
+
 
         val dialogBuilder = AlertDialog.Builder(this, R.style.CustomDialogTheme)
             .setView(dialogView)
