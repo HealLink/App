@@ -48,8 +48,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout.v214)
     implementation (libs.google.material.v190)
     implementation (libs.androidx.viewpager2)
-
-
+    
 
     // AndroidX Lifecycle
     implementation(libs.androidx.lifecycle.livedata.ktx.v262)
