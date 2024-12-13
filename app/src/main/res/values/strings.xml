@@ -102,5 +102,6 @@
     <string name="greeting_text">Hi %1$s\nHere are your stories!</string>
     <string name="permission_granted">Permission granted</string>
     <string name="permission_denied">Permission denied</string>
+    <string name="finish">Finish</string>
 
 </resources>

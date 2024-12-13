@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity(), TimePickerFragment.DialogTimeListener 
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
-    private var isNotificationOn = false
-    val userRepository = Injection.provideUserRepository(this)
     private var lastSelectedItemId: Int = R.id.navigation_list
 
 

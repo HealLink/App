@@ -1,13 +1,13 @@
 package com.heallinkapp.ui.list
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -114,6 +114,7 @@ class ListFragment : Fragment(), TimePickerFragment.DialogTimeListener {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private fun checkNotificationPermission(): Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
@@ -133,6 +134,7 @@ class ListFragment : Fragment(), TimePickerFragment.DialogTimeListener {
         }
     }
 
+    @SuppressLint("InlinedApi")
     private fun requestNotificationPermission() {
         ActivityCompat.requestPermissions(
             requireActivity(),
@@ -174,6 +176,7 @@ class ListFragment : Fragment(), TimePickerFragment.DialogTimeListener {
         }
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
